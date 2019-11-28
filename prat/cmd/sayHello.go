@@ -23,8 +23,8 @@ import (
 
 var sayHello = &cobra.Command{
 	Use:   "hello",
-	Short: "I say hello",
-	Long: `You can define name in an ENV var of HELLO_NAME, 
+	Short: "hello from Prat",
+	Long: `You can define name in an ENV var of PRAT_NAME, 
 or a config file with a name: key --config =config.yml
 or the -name (-n_ flag)`,
 	Run: func(cmd *cobra.Command, args []string) {
@@ -32,8 +32,8 @@ or the -name (-n_ flag)`,
 		if viper.GetString("name")!=""{
 			name = viper.GetString("name")
 		}
-		if viper.GetString("HELLO_NAME")!=""{
-			name = viper.GetString("HELLO_NAME")
+		if viper.GetString("PRAT_NAME")!=""{
+			name = viper.GetString("PRAT_NAME")
 		}
 		fmt.Println("Hello " + name)
 	},
@@ -41,5 +41,5 @@ or the -name (-n_ flag)`,
 
 func init() {
 	rootCmd.AddCommand(sayHello)
-	sayHello.Flags().StringP("name", "n", "Anonymous", "Set your name")
+	sayHello.Flags().StringP("name", "n", "Anonymous", "Say your name")
 }

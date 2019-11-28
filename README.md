@@ -1,25 +1,50 @@
 # Go CLI experiments
 
-## Using Corba
+## Using Cobra (command)
 https://github.com/spf13/cobra
 
 ```bash
-$ cd hello
+$ cd prat
 $ go build
 
 
-$ ./hello hello --help
-You can define name in an ENV var of HELLO_NAME, 
-or a config file with a name: key --config =config.yml
-or the -name (-n_ flag)
+$ ./prat help
+Using config file: /Users/sam/.prat/config.yml  (ENV vars will override config values)
+This util is used to help you create a well formed Pull Request
+
+You will be asked a few questions culminating in the construction of your PR
 
 Usage:
-  hello hello [flags]
+  prat [command]
+
+Available Commands:
+  hello       hello from Prat
+  help        Help about any command
 
 Flags:
-  -h, --help          help for hello
-  -n, --name string   Set your name (default "Anonymous")
+      --config string   config file (default is $HOME/.prat/config.yaml)
+  -d, --dry-run         try out the command without any lasting effect
+  -h, --help            help for prat
+  -t, --toggle          Help message for toggle
 
-Global Flags:
-      --config string   config file (default is $HOME/.hello.yaml)
+Use "prat [command] --help" for more information about a command.
+```
+
+```bash
+$ ./prat hello -n Bob
+Hello Bob
+```
+
+```bash
+$ mkdir $HOME/.prat
+$ cp config.yml $HOME/.prat/
+$ ./prat hello
+Using config file: /Users/sam/.prat/config.yml  (ENV vars will override config values)
+Hello Name From Config
+```
+
+```bash
+$ PRAT_NAME="Name from ENV" ./prat hello
+Using config file: /Users/sam/.prat/config.yml  (ENV vars will override config values)
+Hello Name from ENV
 ```

@@ -15,7 +15,7 @@ limitations under the License.
 */
 package main
 
-import "cli-go-test/hello/cmd"
+import "cli-go-test/prat/cmd"
 
 func main() {
   cmd.Execute()
