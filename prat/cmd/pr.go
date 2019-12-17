@@ -16,30 +16,23 @@ limitations under the License.
 package cmd
 
 import (
-	"fmt"
+	"cli-go-test/prat/core"
 	"github.com/spf13/cobra"
-	"github.com/spf13/viper"
 )
 
-var sayHello = &cobra.Command{
-	Use:   "hello",
-	Short: "hello from Prat",
-	Long: `You can define name in an ENV var of PRAT_NAME, 
-or a config file with a name: key --config =config.yml
-or the -name (-n_ flag)`,
+var prCmd = &cobra.Command{
+	Use:   "pr",
+	Short: "get the given PR",
+	Long: `recover the data for the specified PR.
+Note: PR id's are unique to account/region so we don't need to specify repo`,
 	Run: func(cmd *cobra.Command, args []string) {
-		name, _ := cmd.Flags().GetString("name")
-		if viper.GetString("name")!=""{
-			name = viper.GetString("name")
-		}
-		if viper.GetString("PRAT_NAME")!=""{
-			name = viper.GetString("PRAT_NAME")
-		}
-		fmt.Println("Hello " + name)
+		ccSession := core.GetSession("default", "us-west-2")
+		prId, _ := cmd.Flags().GetString("pr-id")
+		core.GetPullRequest(ccSession, prId)
 	},
 }
 
 func init() {
-	rootCmd.AddCommand(sayHello)
-	sayHello.Flags().StringP("name", "n", "Anonymous", "Say your name")
+	rootCmd.AddCommand(prCmd)
+	prCmd.Flags().StringP("pr-id", "i", "", "This is the system generated PR id")
 }

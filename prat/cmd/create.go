@@ -20,20 +20,26 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var listCmd = &cobra.Command{
-	Use:   "list",
-	Short: "list PRs for a given repo",
-	Long: `You can define name in an ENV var of PRAT_NAME, 
-or a config file with a name: key --config =config.yml
-or the -name (-n_ flag)`,
+var createCmd = &cobra.Command{
+	Use:   "create",
+	Short: "create PRs",
+	Long: `command to create a pull request`,
 	Run: func(cmd *cobra.Command, args []string) {
 		ccSession := core.GetSession("default", "us-west-2")
+		title, _ := cmd.Flags().GetString("title")
+		description, _ := cmd.Flags().GetString("desc")
+		srcBranch, _ := cmd.Flags().GetString("src-branch")
+		destBranch, _ := cmd.Flags().GetString("dest-branch")
 		repoName, _ := cmd.Flags().GetString("repo-name")
-		core.ListPullRequest(ccSession, repoName)
+		core.CreatePullRequest(ccSession, title, description, srcBranch, destBranch, repoName)
 	},
 }
 
 func init() {
-	rootCmd.AddCommand(listCmd)
-	listCmd.Flags().StringP("repo-name", "r", "", "Repository name where the PR resides")
+	rootCmd.AddCommand(createCmd)
+	createCmd.Flags().StringP("title", "t", "", "Tile for the PR")
+	createCmd.Flags().StringP("desc", "d", "", "Description for the PR")
+	createCmd.Flags().StringP("src-branch", "s", "", "Source branch for the PR")
+	createCmd.Flags().StringP("dest-branch", "e", "", "Destination branch for the PR")
+	createCmd.Flags().StringP("repo-name", "r", "", "Repository name where the PR resides")
 }

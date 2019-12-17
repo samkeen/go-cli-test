@@ -59,7 +59,7 @@ func init() {
 	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.prat/config.yaml)")
 
 	// BoolP is like Bool, but accepts a shorthand letter that can be used after a single dash.
-	rootCmd.PersistentFlags().BoolP("dry-run", "d", false,
+	rootCmd.PersistentFlags().BoolP("dry-run", "", false,
 	  "try out the command without any lasting effect")
 
 	// Cobra also supports local flags, which will only run
