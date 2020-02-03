@@ -32,7 +32,7 @@ func ListPullRequest(svc *CodeCommit, repositoryName string) {
 		//AuthorArn:         nil,
 		//MaxResults:        nil,
 		//NextToken:         nil,
-		//PullRequestStatus: nil,
+		PullRequestStatus: aws.String("OPEN"),
 		RepositoryName:    aws.String(repositoryName),
 	}
 	result, err := svc.ListPullRequests(&input)
@@ -40,14 +40,14 @@ func ListPullRequest(svc *CodeCommit, repositoryName string) {
 		exitErrorf("Unable to list PRs, %v", err)
 	}
 
-	fmt.Printf("Repos: %v\n", result.PullRequestIds)
-
-	for _, b := range result.PullRequestIds {
-		fmt.Printf("* id %v\n", *b)
+	for _, prId := range result.PullRequestIds {
+		pr := GetPullRequest(svc, *prId)
+		fmt.Printf("[%v] %v\n", *prId, *pr.Title)
 	}
 }
 
-func GetPullRequest(svc *CodeCommit, pullRequestId string) {
+//GetPullRequest
+func GetPullRequest(svc *CodeCommit, pullRequestId string) *PullRequest {
 	input := GetPullRequestInput{
 		// id's are unique to account/region so we don't need to specify repo
 		PullRequestId: aws.String(pullRequestId),
@@ -56,8 +56,7 @@ func GetPullRequest(svc *CodeCommit, pullRequestId string) {
 	if err != nil {
 		exitErrorf("Unable get PR, %v", err)
 	}
-
-	fmt.Printf("Pull Request: %v\n", result.PullRequest)
+	return result.PullRequest
 
 }
 
