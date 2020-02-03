@@ -42,7 +42,8 @@ func ListPullRequest(svc *CodeCommit, repositoryName string) {
 
 	for _, prId := range result.PullRequestIds {
 		pr := GetPullRequest(svc, *prId)
-		fmt.Printf("[%v] %v\n", *prId, *pr.Title)
+		fmt.Printf("Pull Request[%v] %v\n", *prId, *pr.Title)
+		fmt.Printf("%s", aws.StringValue(pr.Description))
 	}
 }
 
